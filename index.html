@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ========== SEO ========== -->
+  <title>Bardic.Space Créations – Développeur web & créateur de contenu en Suisse romande</title>
+  <meta name="description" content="Lucien, développeur web et créateur de contenu en Suisse. Sites WordPress, applications Vue.js, vidéos et projets enracinés : des créations utiles, humaines et bien faites.">
+  <meta name="author" content="Prénom Nom">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.bardic.space/">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_CH">
+  <meta property="og:title" content="Prénom Nom – Développeur web & créateur de contenu">
+  <meta property="og:description" content="Des créations web et vidéo avec du sens, faites par un humain, avec les bons outils.">
+  <meta property="og:image" content="https://www.bardic.space/images/og-cover.jpg">
+  <meta property="og:url" content="https://www.bardic.space">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Données structurées (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Lucien P.",
+    "url": "https://www.bardic.space",
+    "jobTitle": "Développeur web et créateur de contenu",
+    "address": { "@type": "PostalAddress", "addressCountry": "CH", "addressRegion": "Valais" },
+    "knowsAbout": ["PHP", "WordPress", "Vue.js", "Next.js", "JavaScript", "SQL", "Édition vidéo", "Création de contenu"],
+    "sameAs": [
+      "https://github.com/lucius-barde",
+      "https://www.youtube.com/@BardicSpace"
+    ]
+  }
+  </script>
+
+  <style>
+    /* ========== VARIABLES ========== */
+    :root {
+      --bg: #faf7f2;
+      --bg-alt: #f1ebe0;
+      --surface: #ffffff;
+      --text: #2b2a28;
+      --text-soft: #6b665e;
+      --accent: rgb(33, 68, 120);        /* #214478 */
+      --accent-dark: #16305a;            /* version plus sombre, pour les hovers */
+      --accent-soft: #e8eef7;            /* fond très clair teinté de bleu */
+      --border: #e4dccd;
+      --radius: 14px;
+      --shadow: 0 6px 24px rgba(43, 42, 40, .08);
+      --nav-h: 68px;
+      --font-title: Georgia, "Times New Roman", serif;
+      --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --max-w: 1100px;
+    }
+
+    /* ========== BASE ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-dark); }
+    h1, h2, h3 { font-family: var(--font-title); line-height: 1.2; }
+    section { padding: 5rem 1.25rem; }
+    .container { max-width: var(--max-w); margin: 0 auto; }
+    .section-title { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: .5rem; }
+    .section-intro { color: var(--text-soft); max-width: 640px; margin-bottom: 2.5rem; }
+    .skip-link {
+      position: absolute; left: -999px; top: 0;
+      background: var(--accent); color: #fff; padding: .6rem 1rem; z-index: 200;
+    }
+    .skip-link:focus { left: 0; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+    /* ========== BOUTONS ========== */
+    .btn {
+      display: inline-block;
+      padding: .85rem 1.6rem;
+      border-radius: 999px;
+      font-weight: 600;
+      border: 2px solid var(--accent);
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: transform .2s, background .2s, color .2s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); color: #fff; transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--accent); }
+    .btn-outline:hover { background: var(--accent-soft); transform: translateY(-2px); }
+
+    /* ========== NAVBAR ========== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      background: rgba(250, 247, 242, .92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    .navbar .container {
+      height: 100%; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.25rem;
+    }
+    .logo { font-family: var(--font-title); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: var(--text); font-weight: 500; position: relative; padding: .25rem 0; }
+    .nav-links a::after {
+      content: ""; position: absolute; left: 0; bottom: -2px; height: 2px; width: 0;
+      background: var(--accent); transition: width .25s;
+    }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .nav-toggle {
+      display: none; background: none; border: 0; cursor: pointer;
+      width: 40px; height: 40px; position: relative;
+    }
+    .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
+      content: ""; position: absolute; left: 8px; width: 24px; height: 2px;
+      background: var(--text); transition: transform .25s, opacity .25s;
+    }
+    .nav-toggle span { top: 19px; }
+    .nav-toggle span::before { top: -7px; left: 0; }
+    .nav-toggle span::after { top: 7px; left: 0; }
+    .nav-toggle[aria-expanded="true"] span { background: transparent; }
+    .nav-toggle[aria-expanded="true"] span::before { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle[aria-expanded="true"] span::after { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ========== HERO ========== */
+    .hero {
+      min-height: 100vh; padding-top: calc(var(--nav-h) + 3rem);
+      display: flex; align-items: center;
+      background:
+        radial-gradient(circle at 85% 20%, var(--accent-soft), transparent 45%),
+        var(--bg);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 3rem; align-items: center; }
+    .hero-tag {
+      display: inline-block; background: var(--accent-soft); color: var(--accent-dark);
+      padding: .35rem .9rem; border-radius: 999px; font-size: .9rem; font-weight: 600; margin-bottom: 1.25rem;
+    }
+    .hero h1 { font-size: clamp(2.2rem, 5.5vw, 3.7rem); margin-bottom: 1.25rem; }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .hero p { font-size: 1.15rem; color: var(--text-soft); max-width: 560px; margin-bottom: 2rem; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-photo {
+      aspect-ratio: 1; border-radius: 50% 50% 50% 12%;
+      overflow: hidden; box-shadow: var(--shadow); border: 6px solid var(--surface);
+      max-width: 380px; justify-self: center;
+    }
+    .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ========== MANIFESTE (angle humain) ========== */
+    .manifesto { background: var(--bg-alt); }
+    .manifesto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+    .manifesto-card {
+      background: var(--surface); padding: 1.75rem; border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .manifesto-card .icon { font-size: 1.8rem; margin-bottom: .75rem; }
+    .manifesto-card h3 { font-size: 1.2rem; margin-bottom: .5rem; }
+    .manifesto-card p { color: var(--text-soft); font-size: .98rem; }
+
+    /* ========== GALERIE ========== */
+    .filters { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 2rem; }
+    .filter-btn {
+      padding: .45rem 1.1rem; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface); cursor: pointer; font-family: inherit; font-size: .92rem;
+      transition: all .2s;
+    }
+    .filter-btn:hover { border-color: var(--accent); }
+    .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.5rem; }
+    .card {
+      background: var(--surface); border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      cursor: pointer; text-align: left; font-family: inherit; color: inherit; padding: 0;
+      display: flex; flex-direction: column;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(43, 42, 40, .14); }
+    .card-img { aspect-ratio: 16/10; overflow: hidden; background: var(--bg-alt); }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s, opacity .5s; opacity: 0; }
+    .card-img img.loaded { opacity: 1; }
+    .card:hover .card-img img { transform: scale(1.05); }
+    .card-body { padding: 1.1rem 1.25rem 1.4rem; }
+    .card-cat { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); font-weight: 700; }
+    .card-body h3 { font-size: 1.15rem; margin: .3rem 0 .4rem; }
+    .card-body p { color: var(--text-soft); font-size: .93rem; }
+    .card.hidden { display: none; }
+
+    /* ========== MODALE ========== */
+    .modal {
+      position: fixed; inset: 0; background: rgba(30, 28, 26, .65);
+      display: none; align-items: center; justify-content: center;
+      padding: 1.25rem; z-index: 150;
+    }
+    .modal.open { display: flex; animation: fadeIn .25s ease; }
+    .modal-box {
+      background: var(--surface); border-radius: var(--radius); max-width: 720px; width: 100%;
+      max-height: 90vh; overflow-y: auto; position: relative;
+      animation: popIn .3s ease;
+    }
+    .modal-box img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+    .modal-content { padding: 1.75rem; }
+    .modal-content h3 { font-size: 1.6rem; margin: .3rem 0 .8rem; }
+    .modal-content p { margin-bottom: 1rem; color: var(--text-soft); }
+    .tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: 1.25rem; }
+    .tag { background: var(--bg-alt); padding: .2rem .7rem; border-radius: 999px; font-size: .82rem; }
+    .modal-close {
+      position: absolute; top: .75rem; right: .75rem; width: 40px; height: 40px;
+      border-radius: 50%; border: 0; background: rgba(255, 255, 255, .92);
+      font-size: 1.4rem; cursor: pointer; box-shadow: var(--shadow);
+    }
+    .modal-links { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+    /* ========== PRESTATIONS ========== */
+    .services { background: var(--bg-alt); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .service {
+      background: var(--surface); padding: 1.6rem; border-radius: var(--radius);
+      border-left: 4px solid var(--accent);
+    }
+    .service h3 { font-size: 1.15rem; margin-bottom: .5rem; }
+    .service p { color: var(--text-soft); font-size: .95rem; }
+    .skills { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 2.5rem; }
+    .skills .tag { background: var(--surface); border: 1px solid var(--border); font-size: .88rem; padding: .3rem .85rem; }
+
+    /* ========== CONTACT ========== */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; }
+    .contact-info p { color: var(--text-soft); margin-bottom: 1rem; }
+    form { display: grid; gap: 1.1rem; }
+    .field label { display: block; font-weight: 600; margin-bottom: .35rem; font-size: .93rem; }
+    .field input, .field textarea, .field select {
+      width: 100%; padding: .8rem 1rem; border: 1px solid var(--border);
+      border-radius: 10px; font: inherit; background: var(--surface); color: var(--text);
+    }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .field textarea { min-height: 150px; resize: vertical; }
+    .hp { position: absolute; left: -9999px; }   /* honeypot anti-spam */
+    .form-msg { padding: .9rem 1rem; border-radius: 10px; background: #e6f4ea; color: #1e6b34; display: none; }
+    .form-msg.show { display: block; }
+
+    /* ========== FOOTER ========== */
+    footer { background: var(--text); color: #d9d4ca; padding: 2.5rem 1.25rem; text-align: center; font-size: .92rem; }
+    footer a { color: #fff; }
+
+    /* ========== ANIMATIONS ========== */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes popIn { from { opacity: 0; transform: scale(.94) translateY(12px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 860px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        position: absolute; top: var(--nav-h); left: 0; right: 0;
+        flex-direction: column; gap: 0; background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        max-height: 0; overflow: hidden; transition: max-height .3s;
+      }
+      .nav-links.open { max-height: 380px; }
+      .nav-links a { display: block; padding: 1rem 1.5rem; }
+      .hero-grid, .contact-grid, .manifesto-grid { grid-template-columns: 1fr; }
+      .hero-photo { max-width: 260px; order: -1; }
+      section { padding: 3.5rem 1.25rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <!-- ========== NAVBAR ========== -->
+  <header class="navbar">
+    <div class="container">
+      <a href="#accueil" class="logo">Bardic.Space Créations</a>
+      <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      <nav aria-label="Navigation principale">
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#accueil">Accueil</a></li>
+          <li><a href="#approche">Mon approche</a></li>
+          <li><a href="#projets">Projets</a></li>
+          <li><a href="#prestations">Prestations</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="accueil">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <span class="hero-tag">🇨🇭 Développeur web & créateur de contenu</span>
+          <h1>Des créations <em>faites par un humain</em>, pour des humains.</h1>
+          <p>
+            Dans un monde où l'IA génère tout en quelques secondes, je mise sur ce qu'elle ne sait pas faire :
+            des projets qui ont du sens, ancrés dans un territoire, une langue, une communauté.
+            Je me sers des bons outils, mais c'est toujours la personne qui garde la main.
+          </p>
+          <div class="hero-actions">
+            <a href="#projets" class="btn btn-primary">Voir mes projets</a>
+            <a href="#contact" class="btn btn-outline">On en discute ?</a>
+          </div>
+        </div>
+        <div class="hero-photo reveal">
+          <!-- TODO: remplacer par ta photo -->
+          <img src="https://placehold.co/600x600/f1ebe0/16305a?text=Ta+photo" alt="Portrait de Prénom Nom" width="600" height="600" fetchpriority="high">
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== APPROCHE ========== -->
+    <section class="manifesto" id="approche">
+      <div class="container">
+        <h2 class="section-title reveal">À l'heure de l'IA, rester humain</h2>
+        <p class="section-intro reveal">
+          Je ne suis ni pour ni contre l'IA : je l'utilise comme un outil parmi d'autres,
+          avec discernement, et jamais à la place du jugement, de la curiosité ou du goût.
+        </p>
+        <div class="manifesto-grid">
+          <article class="manifesto-card reveal">
+            <div class="icon" aria-hidden="true">🛠️</div>
+            <h3>Des outils bien choisis</h3>
+            <p>L'IA accélère le fastidieux. Le reste (idées, choix, relecture, sensibilité) reste entre mes mains.</p>
+          </article>
+          <article class="manifesto-card reveal">
+            <div class="icon" aria-hidden="true">🏔️</div>
+            <h3>Du contenu enraciné</h3>
+            <p>Patois, chants, paysages, vie locale : ce qui nous ressemble ne se génère pas, ça se collecte et ça se transmet.</p>
+          </article>
+          <article class="manifesto-card reveal">
+            <div class="icon" aria-hidden="true">🤝</div>
+            <h3>Un vrai interlocuteur</h3>
+            <p>Un échange direct, du temps pour comprendre votre projet et un site que vous saurez réellement utiliser.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJETS / GALERIE ========== -->
+    <section id="projets">
+      <div class="container">
+        <h2 class="section-title reveal">Mes projets</h2>
+        <p class="section-intro reveal">
+          Ce site présente surtout des projets personnels, nés d'une passion, d'un besoin, ou juste d'une envie de détendre l'auditoire.
+          Cliquez sur une carte pour en savoir plus.
+        </p>
+
+        <div class="filters reveal" role="group" aria-label="Filtrer les projets">
+          <button class="filter-btn active" data-filter="all">Tous</button>
+          <button class="filter-btn" data-filter="web">Web</button>
+          <button class="filter-btn" data-filter="video">Vidéo</button>
+          <button class="filter-btn" data-filter="audio">Audio</button>
+        </div>
+
+        <div class="gallery" id="gallery">
+          <!-- Cartes générées par JS depuis le tableau "projects" (facile à passer en v-for avec Vue) -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PRESTATIONS ========== -->
+    <section class="services" id="prestations">
+      <div class="container">
+        <h2 class="section-title reveal">Ce que je peux faire pour vous</h2>
+        <p class="section-intro reveal">Court et simple : trois façons de collaborer.</p>
+
+        <div class="services-grid">
+          <article class="service reveal">
+            <h3>Sites & applications web</h3>
+            <p>Sites vitrines WordPress, applications Vue.js / Next.js, back-end PHP et bases de données SQL. Du sur-mesure, maintenable et documenté.</p>
+          </article>
+          <article class="service reveal">
+            <h3>Vidéo, audio & image</h3>
+            <p>Montage, captation sonore, illustrations et habillage : de quoi donner une vraie voix à votre association, votre commerce ou votre projet.</p>
+          </article>
+          <article class="service reveal">
+            <h3>Hébergement & support</h3>
+            <p>Administration de serveurs web et VPS, mises à jour, dépannage et accompagnement technique pour rester serein·e après la mise en ligne.</p>
+          </article>
+        </div>
+
+        <div class="skills reveal" aria-label="Compétences">
+          <span class="tag">PHP</span><span class="tag">WordPress</span><span class="tag">Vue.js</span>
+          <span class="tag">Next.js</span><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span>
+          <span class="tag">Git</span><span class="tag">Serveurs & VPS</span><span class="tag">MySQL / MariaDB</span>
+          <span class="tag">PostgreSQL</span><span class="tag">Supabase</span><span class="tag">Support technique</span>
+          <span class="tag">Montage vidéo</span><span class="tag">Audio</span><span class="tag">Retouche image</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONTACT ========== -->
+    <section id="contact">
+      <div class="container contact-grid">
+        <div class="contact-info reveal">
+          <h2 class="section-title">Parlons-en</h2>
+          <p>Un projet de site, une vidéo, une idée un peu folle ? Écrivez-moi, je réponds en général sous quelques jours.</p>
+          <p>📍 Valais, Suisse<br>
+             ✉️ <a href="mailto:contact@exemple.ch">contact@exemple.ch</a></p>
+          <p>
+            <a href="https://github.com/lucius-barde" target="_blank" rel="noopener">GitHub</a> ·
+            <a href="https://www.youtube.com/@BardicSpace" target="_blank" rel="noopener">YouTube</a>
+          </p>
+        </div>
+
+        <form id="contact-form" class="reveal" novalidate>
+          <div class="field">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="subject">Sujet</label>
+            <select id="subject" name="subject">
+              <option>Site web / application</option>
+              <option>Vidéo / audio</option>
+              <option>Support / hébergement</option>
+              <option>Contribuer au Lexique Romand</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit" class="btn btn-primary">Envoyer le message</button>
+          <p class="form-msg" id="form-msg" role="status">Merci ! (Simulation front-end : aucun message n'est réellement envoyé.)</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Bardic.Space · Créé en Suisse 🇨🇭 · <a href="#accueil">Retour en haut ↑</a></p>
+  </footer>
+
+  <!-- ========== MODALE ========== -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close" aria-label="Fermer">×</button>
+      <img id="modal-img" src="" alt="">
+      <div class="modal-content">
+        <span class="card-cat" id="modal-cat"></span>
+        <h3 id="modal-title"></h3>
+        <div class="tags" id="modal-tags"></div>
+        <div id="modal-desc"></div>
+        <div class="modal-links" id="modal-links"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========== DONNÉES DES PROJETS ========== */
+    // TODO: remplacer les images placeholder et les liens.
+    const ph = (t) => `https://placehold.co/800x500/f1ebe0/16305a?text=${encodeURIComponent(t)}`;
+
+    const projects = [
+      {
+        id: 1, cat: "web", catLabel: "Web · Application",
+        title: "Gestion de budget & comptabilité minimale",
+        short: "Saisir ses dépenses en deux clics depuis le mobile.",
+        img: ph("Budget app"),
+        tags: ["Mobile first", "Budget", "Comptabilité", "Open source"],
+        desc: [
+          "Des applications personnelles pensées pour une seule chose : ajouter une information financière sur le vif, depuis son téléphone, sans ouvrir un tableur ni se perdre dans des menus.",
+          "Le code source est disponible sur GitHub ; l'accès à l'application elle-même se fait uniquement sur demande."
+        ],
+        links: [{ label: "Code source (GitHub)", url: "https://github.com/lucius-barde/lucius-budget-vuejs" }]
+      },
+      {
+        id: 2, cat: "web", catLabel: "Web · Vue.js",
+        title: "Lexique romand interactif",
+        short: "Le vocabulaire de Suisse romande, enrichi par ses habitants.",
+        img: ph("Lexique romand"),
+        tags: ["Vue.js", "Participatif", "Patrimoine linguistique", "Suisse romande"],
+        desc: [
+          "Un lexique interactif consacré aux expressions et mots propres à la Suisse romande, ouvert aux contributions de toutes et tous.",
+          "Réalisé avec Vue.js, il met l'accent sur une recherche rapide, une navigation agréable et la participation de la communauté."
+        ],
+        links: [{ label: "Voir le site", url: "https://github.com/lucius-barde/lucius-compta-vuejs" }]
+      },
+      {
+        id: 3, cat: "web", catLabel: "Web · WordPress → Vue.js",
+        title: "Recueil de chants de Suisse et d'Europe",
+        short: "Paroles, partitions et traductions, classées par pays.",
+        img: ph("Recueil de chants"),
+        tags: ["Vue.js", "WordPress", "Partitions", "Traductions", "Patrimoine musical"],
+        desc: [
+          "Un recueil en ligne de chants de Suisse et d'Europe, triés par pays, avec paroles, partitions et traductions.",
+          "La première version a été construite avec WordPress ; la deuxième, réécrite en Vue.js, offre une navigation plus fluide et une meilleure expérience de recherche."
+        ],
+        links: [{ label: "Voir le site", url: "https://www.bardsinexile.org" }]
+      },
+      {
+        id: 4, cat: "video", catLabel: "Vidéo · YouTube",
+        title: "Faits insolites",
+        short: "Curiosités sur la Suisse et l'Europe, avec illustrations sur-mesure. Une série pour la chaîne Lucius 360.",
+        img: ph("Faits insolites"),
+        tags: ["YouTube", "CapCut", "Illustration", "Storytelling"],
+        desc: [
+          "Une série de vidéos sur les faits étonnants de la Suisse et de l'Europe, avec un avatar et des icônes photoréalistes créés sur-mesure pour donner une identité visuelle propre à la série.",
+          "Montage réalisé avec CapCut."
+        ],
+        links: [{ label: "Voir la série", url: "https://www.youtube.com/watch?v=0Wd0F4l49II" }]
+      },
+      {
+        id: 5, cat: "video", catLabel: "Vidéo · Vlog",
+        title: "Borsod, une partie méconnue de la Hongrie",
+        short: "Découverte d'une région avec un guide touristique local.",
+        img: ph("Vlog Hongrie"),
+        tags: ["YouTube", "ShotCut", "Documentaire", "Voyage", "Hongrie"],
+        desc: [
+          "Une série de découverte de la région de Borsod [/ˈborʃod/], en Hongrie, accompagnée d'un guide touristique local qui partage son territoire et ses adresses.",
+          "Montage réalisé avec ShotCut."
+        ],
+        links: [{ label: "Voir la série", url: "https://www.youtube.com/watch?v=m-MKXCcq8M8" }]
+      },
+      {
+        id: 6, cat: "video", catLabel: "Vidéo · Tutoriels",
+        title: "Tutoriels multimédia open source",
+        short: "LMMS pour l'audio, ShotCut pour la vidéo.",
+        img: ph("Tutos LMMS & ShotCut"),
+        tags: ["Open source", "LMMS", "ShotCut", "Pédagogie", "Audio", "Vidéo"],
+        desc: [
+          "Une série de tutoriels pour apprendre à créer sans dépendre de logiciels payants : LMMS pour la production musicale et ShotCut pour le montage vidéo.",
+          "Des explications pas à pas, accessibles aux débutants."
+        ],
+        links: [{ label: "Voir les tutoriels", url: "https://www.youtube.com/@BardicSpace/playlists" }]
+      },
+      {
+        id: 7, cat: "video", catLabel: "Vidéo · Vlog",
+        title: "Blatten, 1 an après l'éboulement",
+        short: "Quels projets d'avenir pour le village ?",
+        img: ph("Blatten, 1 an après"),
+        tags: ["YouTube", "CapCut", "Vlog voyage", "Valais", "Reportage"],
+        desc: [
+          "Une vidéo qui revient sur Blatten, un an après l'éboulement, et s'intéresse aux projets d'avenir de la commune et de ses habitants.",
+          "Réalisée dans un style vlog voyage, avec un montage CapCut."
+        ],
+        links: [{ label: "Voir la vidéo", url: "https://www.youtube.com/watch?v=b_Y8FLVszWo" }]
+      },
+      {
+        id: 8, cat: "video", catLabel: "Vidéo · Série voyage",
+        title: "Tour des Cantons Suisses",
+        short: "Un canton après l'autre, à la découverte de la Suisse.",
+        img: ph("Tour des Cantons"),
+        tags: ["YouTube", "ShotCut", "Voyage", "Suisse", "Cantons"],
+        desc: [
+          "Une série de voyages à travers les cantons suisses, pour découvrir la diversité des paysages, des traditions et des lieux souvent méconnus.",
+          "Montage réalisé avec ShotCut (open source)."
+        ],
+        links: [{ label: "Voir la série", url: "https://www.youtube.com/watch?v=-9m3x7qnic4&list=PLSAvAHXeg4CJazOGdxnhPIosG-jgI-YmO" }]
+      },
+      {
+        id: 9, cat: "audio", catLabel: "Web · Audio · YouTube",
+        title: "Site de chorale (Valais)",
+        short: "Site web, captation sonore des concerts et chaîne YouTube.",
+        img: ph("Site de chorale"),
+        tags: ["WordPress", "Captation sonore", "YouTube", "Association", "Valais"],
+        desc: [
+          "Réalisation du site web d'une chorale valaisanne, avec enregistrement sonore des concerts et gestion de leur chaîne YouTube.",
+          "Un projet à la croisée du web et de l'audio, pensé pour faire vivre le répertoire de la chorale au-delà des salles de concert."
+        ],
+        links: [{ label: "Voir le site", url: "https://www.echodesfollateres.ch" }]
+      },
+      {
+        id: 10, cat: "web", catLabel: "Web · WordPress",
+        title: "Site d'un atelier de couture (Valais)",
+        short: "Une vitrine soignée pour un savoir-faire artisanal.",
+        img: ph("Atelier de couture"),
+        tags: ["WordPress", "Site vitrine", "Artisanat", "SEO local", "Valais"],
+        desc: [
+          "Un site vitrine WordPress pour un atelier de couture valaisan, conçu pour mettre en valeur le travail artisanal et faciliter la prise de contact.",
+          "L'accent a été mis sur la simplicité d'administration, pour que la cliente puisse mettre à jour son contenu en toute autonomie."
+        ],
+        links: [{ label: "Voir le site", url: "https://www.atelierdejennifer.ch" }]
+      },
+      {
+        id: 11, cat: "web", catLabel: "Web · PHP",
+        title: "Petites annonces par parrainage (France)",
+        short: "Un site d'annonces fondé sur la confiance entre membres.",
+        img: ph("Annonces parrainage"),
+        tags: ["PHP", "Framework", "Parrainage", "Petites annonces", "Back-end"],
+        desc: [
+          "Un site de petites annonces où l'on entre uniquement par parrainage, pour favoriser la confiance entre membres.",
+          "J'en ai été un des premiers développeurs, avec le framework SlimPHP. Je n'interviens plus sur le projet aujourd'hui."
+        ],
+        links: [{ label: "Voir le site", url: "https://www.rucher-patriote.fr" }]
+      },
+      {
+        id: 12, cat: "video", catLabel: "Vidéo · YouTube",
+        title: "Montage vidéo 360°",
+        short: "Vidéos panoramiques interactives filmées avec une GoPro MAX 360.",
+        img: ph("Faits insolites"),
+        tags: ["YouTube", "CapCut", "Illustration", "Storytelling"],
+        desc: [
+          "Ma chaîne Lucius360 contient plusieurs vidéos panoramiques interactives filmées avec une GoPro MAX 360: vlogs interactifs, road trips à vélos, ou, en lien ici, une immersion dans le carnaval du Lötschental.",
+          "Montages réalisés avec ShotCut ou CapCut."
+        ],
+        links: [{ label: "Voir la série", url: "https://www.youtube.com/watch?v=lDWfcnJG2hM" }]
+      },
+    ];
+
+    /* ========== RENDU DE LA GALERIE ========== */
+    const gallery = document.getElementById("gallery");
+
+    gallery.innerHTML = projects.map(p => `
+      <button class="card reveal" data-cat="${p.cat}" data-id="${p.id}" aria-haspopup="dialog">
+        <div class="card-img">
+          <img data-src="${p.img}" alt="Aperçu du projet : ${p.title}" width="800" height="500" loading="lazy">
+        </div>
+        <div class="card-body">
+          <span class="card-cat">${p.catLabel}</span>
+          <h3>${p.title}</h3>
+          <p>${p.short}</p>
+        </div>
+      </button>
+    `).join("");
+
+    /* ========== LAZYLOAD (IntersectionObserver, en plus de loading="lazy") ========== */
+    const imgObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const img = e.target;
+        img.src = img.dataset.src;
+        img.onload = () => img.classList.add("loaded");
+        obs.unobserve(img);
+      });
+    }, { rootMargin: "200px" });
+    document.querySelectorAll("img[data-src]").forEach(img => imgObserver.observe(img));
+
+    /* ========== ANIMATIONS AU SCROLL ========== */
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); }
+      });
+    }, { threshold: .12 });
+    document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+    /* ========== FILTRES ========== */
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const f = btn.dataset.filter;
+        document.querySelectorAll(".card").forEach(c => {
+          c.classList.toggle("hidden", f !== "all" && c.dataset.cat !== f);
+        });
+      });
+    });
+
+    /* ========== MODALE ========== */
+    const modal = document.getElementById("modal");
+    let lastFocus = null;
+
+    function openModal(id) {
+      const p = projects.find(x => x.id === Number(id));
+      if (!p) return;
+      lastFocus = document.activeElement;
+      document.getElementById("modal-img").src = p.img;
+      document.getElementById("modal-img").alt = `Aperçu du projet : ${p.title}`;
+      document.getElementById("modal-cat").textContent = p.catLabel;
+      document.getElementById("modal-title").textContent = p.title;
+      document.getElementById("modal-tags").innerHTML = p.tags.map(t => `<span class="tag">${t}</span>`).join("");
+      document.getElementById("modal-desc").innerHTML = p.desc.map(d => `<p>${d}</p>`).join("");
+      document.getElementById("modal-links").innerHTML = p.links
+        .map(l => `<a class="btn btn-primary" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join("");
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      document.getElementById("modal-close").focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (lastFocus) lastFocus.focus();
+    }
+
+    gallery.addEventListener("click", e => {
+      const card = e.target.closest(".card");
+      if (card) openModal(card.dataset.id);
+    });
+    document.getElementById("modal-close").addEventListener("click", closeModal);
+    modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && modal.classList.contains("open")) closeModal(); });
+
+    /* ========== NAVBAR : menu mobile + lien actif ========== */
+    const toggle = document.querySelector(".nav-toggle");
+    const links = document.getElementById("nav-links");
+
+    toggle.addEventListener("click", () => {
+      const open = links.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open);
+    });
+    links.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+      links.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    }));
+
+    const sections = document.querySelectorAll("main section[id]");
+    const navAnchors = links.querySelectorAll("a");
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navAnchors.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id));
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    sections.forEach(s => spy.observe(s));
+
+    /* ========== FORMULAIRE (front uniquement) ========== */
+    const form = document.getElementById("contact-form");
+    const msg = document.getElementById("form-msg");
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      if (form.website.value) return;                 // honeypot
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      // TODO: brancher l'envoi (API, Formspree, backend PHP…)
+      msg.classList.add("show");
+      form.reset();
+      setTimeout(() => msg.classList.remove("show"), 6000);
+    });
+
+    /* ========== DIVERS ========== */
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
